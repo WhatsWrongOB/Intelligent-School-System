@@ -33,7 +33,7 @@ router.delete("/subject/:id",verifyTeacherToken, catchError(SubjectController.de
 router.post("/marks", verifyTeacherToken, catchError(MarksController.addMarks));
 router.post("/marks/bulk", verifyTeacherToken, catchError(MarksController.bulkUploadMarks));
 router.get("/marks", verifyTeacherToken, catchError(MarksController.getMarks));
-router.put("/marks/:id", verifyTeacherToken, catchError(MarksController.updateMarks));
+router.patch("/marks/:id", verifyTeacherToken, catchError(MarksController.updateMarks));
 router.delete("/marks/:id", verifyTeacherToken, catchError(MarksController.deleteMarks));
 
 // /_____________________________Routes for Student Management___________________________
