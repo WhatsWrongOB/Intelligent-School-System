@@ -3,33 +3,21 @@ import Student from "../models/student.model.js";
 import Subject from "../models/subject.model.js";
 
 class MarksController {
-  // Add bulk marks for all students in a class for the same subject
   async bulkUploadMarks(req, res) {
-    const { subjectId, marksData, examType } = req.body;
+    const { examType, marksData } = req.body;
 
-    if (!subjectId || !marksData || !examType) {
-      throw new Error("Subject ID, marks data, and exam type are required");
-    }
+    console.log(examType, marksData);
 
-    if (!Array.isArray(marksData) || marksData.length === 0) {
-      throw new Error("Marks data must be a non-empty array");
-    }
-
-    const subject = await Subject.findById(subjectId);
-    if (!subject) {
-      throw new Error("Invalid subject ID");
-    }
-
-    const studentIds = marksData.map((entry) => entry.studentId);
-    const students = await Student.find({ _id: { $in: studentIds } });
-
-    if (students.length !== marksData.length) {
-      throw new Error("Some student IDs are invalid");
+    if (!examType || !marksData || marksData.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Exam type and marks data are required",
+      });
     }
 
     const bulkMarks = marksData.map((entry) => ({
-      student: entry.studentId,
-      subject: subjectId,
+      student: entry.student,
+      subject: entry.subject,
       marksObtained: entry.marksObtained,
       totalMarks: entry.totalMarks,
       examType,
@@ -37,9 +25,9 @@ class MarksController {
 
     const savedMarks = await Mark.insertMany(bulkMarks);
 
-    return res.status(201).json({
+    res.status(201).json({
       success: true,
-      message: "Marks uploaded successfully for all students",
+      message: "Marks uploaded successfully",
       savedMarks,
     });
   }
@@ -57,7 +45,8 @@ class MarksController {
       !examType
     ) {
       throw new Error("All fields are required");
-    }examType
+    }
+    examType;
 
     const marks = await Mark.create({
       student: studentId,

@@ -22,6 +22,23 @@ class SubjectController {
     });
   }
 
+  // Get subject by ID subject
+  async getSubjectById(req, res) {
+    const { id } = req.params;
+
+    if (!id) {
+      throw new Error("All fields are required");
+    }
+
+    const subject = await Subject.findById(id);
+
+    return res.status(201).json({
+      success: true,
+      message: "Subject reterived successfully",
+      subject,
+    });
+  }
+
   // Update a subject
   async updateSubject(req, res) {
     const { id } = req.params;

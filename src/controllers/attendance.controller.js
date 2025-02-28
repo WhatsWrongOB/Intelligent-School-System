@@ -1,6 +1,5 @@
 import Attendance from "../models/attendance.model.js";
 import Student from "../models/student.model.js";
-import Staff from "../models/staff.model.js";
 import nodemailer from "nodemailer";
 
 class AttendanceController {

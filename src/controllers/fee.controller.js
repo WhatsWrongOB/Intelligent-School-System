@@ -63,10 +63,17 @@ class FeeController {
     if (markedBy) query.markedBy = markedBy;
     if (submitted) query.isSubmitted = submitted;
 
-    const fees = await Fee.find(query).populate(
-      "markedBy",
-      "name, email, phoneNumberm role"
-    );
+    const fees = await Fee.find(query)
+      .populate("markedBy", "name")
+      .populate({
+        path: "student",
+        select: "name class",
+        populate: {
+          path: "class",
+          select: "className",
+        },
+      });
+
     return res.status(200).json({
       success: true,
       message: "Fee statuses retrieved successfully",

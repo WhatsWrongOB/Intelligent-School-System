@@ -119,29 +119,29 @@ class AuthController {
       throw new Error("Email and password are required");
     }
 
-    const staff = await Staff.findOne({ email });
+    const teacher = await Staff.findOne({ email });
 
-    if (!staff) {
-      throw new Error("Staff not found");
+    if (!teacher || teacher.role !== "Teacher") {
+      throw new Error("Teacher not found");
     }
 
-    const isMatch = await bcrypt.compare(password, staff.password);
+    const isMatch = await bcrypt.compare(password, teacher.password);
 
     if (!isMatch) {
       throw new Error("Invalid credentials");
     }
 
-    const token = generateToken(staff._id, staff.name, staff.role);
+    const token = generateToken(teacher._id, teacher.name, teacher.role);
 
     return res.status(200).json({
       success: true,
       message: "Staff logged in successfully",
       token,
-      staff: {
-        _id: staff._id,
-        name: staff.name,
-        email: staff.email,
-        role: staff.role,
+      teacher: {
+        _id: teacher._id,
+        name: teacher.name,
+        email: teacher.email,
+        role: teacher.role,
       },
     });
   }
