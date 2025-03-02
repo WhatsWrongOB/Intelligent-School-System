@@ -84,7 +84,7 @@ class AuthController {
   async registerStaff(req, res) {
     const { name, email, phoneNumber, role, password } = req.body;
 
-    if (!name || !email || !phoneNumber || !role || !password) {
+    if (!name || !email || !phoneNumber || !role) {
       throw new Error("All fields are required");
     }
 
